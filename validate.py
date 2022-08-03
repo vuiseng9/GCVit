@@ -115,7 +115,7 @@ parser.add_argument('--valid-labels', default='', type=str, metavar='FILENAME',
 
 def validate(args):
     # might as well try to validate something
-    args.pretrained = args.pretrained or not args.checkpoint
+    args.pretrained = args.pretrained or args.checkpoint
     args.prefetcher = not args.no_prefetcher
     amp_autocast = suppress  # do nothing
     if args.amp:
@@ -315,8 +315,8 @@ def main():
     else:
         if args.model == 'all':
             # validate all models in a list of names with pretrained checkpoints
-            args.pretrained = True
-            model_names = list_models(pretrained=True, exclude_filters=['*_in21k', '*_in22k', '*_dino'])
+            # args.pretrained = False
+            model_names = list_models(pretrained=args.pretrained , exclude_filters=['*_in21k', '*_in22k', '*_dino'])
             model_cfgs = [(n, '') for n in model_names]
         elif not is_model(args.model):
             # model name doesn't exist, try as wildcard filter
